@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/src:/usr/src/app/backend/src
+      - ./backend/Cargo.toml:/usr/src/app/backend/Cargo.toml
+      - cargo-cache:/usr/local/cargo/registry
+    working_dir: /usr/src/app/backend
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/usr/src/app/frontend
+      - /app/frontend/node_modules
+    working_dir: /usr/src/app/frontend
+    depends_on:
+      - backend
+
+volumes:
+  cargo-cache:
