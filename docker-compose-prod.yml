@@ -5,7 +5,7 @@ services:
       dockerfile: nginx/Dockerfile.prod
     container_name: production-web
     ports:
-      - "80:80" # 本番なので80ポートで公開
+      - "80:80"
     depends_on:
       - backend
 
