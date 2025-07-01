@@ -1,31 +1,34 @@
 services:
-  backend:
-    build: ./backend
-    container_name: backend
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: nginx
     ports:
-      - "8080:8080"
+      - "8080:80"
+    depends_on:
+      - backend
+      - frontend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
     volumes:
       - ./backend:/usr/src/app/backend
-      - cargo-cache:/usr/local/cargo/registry
     working_dir: /usr/src/app/backend
     environment:
       DATABASE_URL: postgres://user:password@database:5432/project_db
     depends_on:
       - database
-    entrypoint: ["./entrypoint.sh"]
-    command: ["cargo", "run"]
 
   frontend:
     build: ./frontend
     container_name: frontend
-    ports:
-      - "3000:3000"
     volumes:
       - ./frontend:/usr/src/app/frontend
-      - /app/frontend/node_modules
     working_dir: /usr/src/app/frontend
-    depends_on:
-      - backend
 
   database:
     image: postgres:latest

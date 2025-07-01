@@ -86,7 +86,7 @@ export default function ProductPage() {
   }, [open]);
 
   const [action, setAction] = useState<InventoryType>(undefined);
-  const onSubmit = (event) => {
+  const onSubmit = (event: any) => {
     const lastData = data[data.length - 1];
     const formData: IInventoryFormData = {
       id: event.id ? event.id : "",

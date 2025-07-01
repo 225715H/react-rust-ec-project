@@ -1,13 +1,13 @@
-# ==================================
-# ビルダーステージ (Builder Stage)
-# ==================================
-FROM node:20.10-alpine AS builder
+FROM node:20.10 AS build
 
 WORKDIR /app
 
-COPY package*.json ./
-# 本番環境では開発用の依存関係は不要
-RUN npm ci --only=production
+COPY package.json package-lock.json ./
+
+RUN npm install
 
 COPY . .
-RUN npm run build
+
+# RUN npm run build
+
+CMD [ "npm", "run", "dev" ]

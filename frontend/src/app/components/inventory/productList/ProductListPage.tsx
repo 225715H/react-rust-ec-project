@@ -58,7 +58,7 @@ export default function ProductListPage() {
 
   const [id, setId] = useState<number | null>(0);
   const [action, setAction] = useState<string>("");
-  const onSubmit = (event) => {
+  const onSubmit = (event: any) => {
     const data: IProduct = {
       id: id?.toString() || "",
       name: event.name,

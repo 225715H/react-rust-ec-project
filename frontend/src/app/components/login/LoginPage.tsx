@@ -27,7 +27,7 @@ export default function Page() {
   const [authError, setAuthError] = useState("");
 
   const defaultTheme = createTheme();
-  const onSubmit = (event): void => {
+  const onSubmit = (event: any): void => {
     const data: FormData = {
       username: event.username,
       password: event.password,

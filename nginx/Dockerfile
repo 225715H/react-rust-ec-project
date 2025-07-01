@@ -4,4 +4,4 @@ FROM nginx:1.27-alpine
 RUN rm /etc/nginx/conf.d/default.conf
 
 # カスタム設定ファイルをコンテナにコピー
-COPY nginx.conf /etc/nginx/conf.d/
+COPY nginx/nginx-dev.conf /etc/nginx/conf.d/
