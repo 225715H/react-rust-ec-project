@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type FormData = {
   username: string;
@@ -34,9 +35,8 @@ export default function Page() {
     handleLogin(data);
   };
 
-  const navigate = (path: string) => {
-    window.location.href = path; // ここでは簡単のためにwindow.locationを使っていますが、useNavigateを使うこともできます。
-  };
+  const navigate = useNavigate();
+
   const handleLogin = (data?: FormData) => {
     if (!data || !data.username || !data.password) {
       setAuthError("ユーザー名とパスワードを入力してください。");

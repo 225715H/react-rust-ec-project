@@ -1,16 +1,13 @@
-FROM node:20.10
+# ==================================
+# ビルダーステージ (Builder Stage)
+# ==================================
+FROM node:20.10-alpine AS builder
 
-# package.jsonとlockファイルを先にコピー
+WORKDIR /app
+
 COPY package*.json ./
+# 本番環境では開発用の依存関係は不要
+RUN npm ci --only=production
 
-# 依存関係をインストール
-RUN npm install
-
-# プロジェクトファイルをコピー
 COPY . .
-
-# ポートを開放
-EXPOSE 3000
-
-# 開発サーバーを起動
-CMD ["npm", "run", "dev"]
+RUN npm run build

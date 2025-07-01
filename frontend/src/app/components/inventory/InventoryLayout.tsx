@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Logout as LogoutIcon, Menu as MenuIcon } from "@mui/icons-material";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 declare module "@mui/material/styles" {
   // 指定を単純にするためにモバイルとPCの2つに限定する
@@ -42,6 +42,13 @@ const defaultTheme = createTheme({
 export function InventoryLayout() {
   /** サイドバーの開閉を管理する */
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleNavClick = (path: string) => {
+    toggleDrawer(false); // サイドバーを閉じる
+    navigate(path); // ページ遷移
+  };
+
   const toggleDrawer = (open: boolean) => {
     setOpen(open);
   };
@@ -52,14 +59,16 @@ export function InventoryLayout() {
       <Toolbar />
       <Divider />
       <List>
-        <ListItem component="a" href="/inventory/products" disablePadding>
-          <ListItemButton>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => handleNavClick("/inventory/products")}>
             <ListItemText primary="商品一覧" />
           </ListItemButton>
         </ListItem>
         <Divider />
-        <ListItem component="a" href="/inventory/import_sales" disablePadding>
-          <ListItemButton>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => handleNavClick("/inventory/import_sales")}
+          >
             <ListItemText primary="売上一括登録" />
           </ListItemButton>
         </ListItem>

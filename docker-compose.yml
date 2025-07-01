@@ -5,10 +5,15 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./backend/src:/usr/src/app/backend/src
-      - ./backend/Cargo.toml:/usr/src/app/backend/Cargo.toml
+      - ./backend:/usr/src/app/backend
       - cargo-cache:/usr/local/cargo/registry
     working_dir: /usr/src/app/backend
+    environment:
+      DATABASE_URL: postgres://user:password@database:5432/project_db
+    depends_on:
+      - database
+    entrypoint: ["./entrypoint.sh"]
+    command: ["cargo", "run"]
 
   frontend:
     build: ./frontend
@@ -22,5 +27,18 @@ services:
     depends_on:
       - backend
 
+  database:
+    image: postgres:latest
+    container_name: pg_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: project_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
 volumes:
   cargo-cache:
+  db_data:

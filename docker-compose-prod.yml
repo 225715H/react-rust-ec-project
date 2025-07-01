@@ -1,0 +1,47 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile.prod
+    container_name: production-web
+    ports:
+      - "80:80" # 本番なので80ポートで公開
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    container_name: prod_backend
+    restart: always
+    environment:
+      # 本番環境では.envファイルやSecrets管理ツールを使うのが望ましい
+      - DATABASE_URL=postgres://user:password@database:5432/project_db
+      - RUST_LOG=info
+    depends_on:
+      database:
+        condition: service_healthy # DBが完全に起動してからbackendを開始
+    volumes:
+      - cargo-cache:/root/.cargo/registry
+
+  database:
+    image: postgres:16-alpine
+    container_name: prod_db
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=project_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      # DBが接続を受け付けるかチェック
+      test: ["CMD-SHELL", "pg_isready -U user -d project_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_data:
+  cargo-cache:
