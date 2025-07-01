@@ -7,7 +7,7 @@ edition = "2024"
 actix-web = "4.11.0"
 
 # DB & async runtime
-sqlx = { version = "0.7", features = ["postgres", "runtime-tokio", "macros", "uuid", "chrono"] }
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio", "macros", "uuid", "chrono"] }
 tokio = { version = "1", features = ["full"] }
 
 # 型変換と構造体

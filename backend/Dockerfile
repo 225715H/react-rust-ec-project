@@ -2,7 +2,7 @@
 # 1. ビルダーステージ (Builder Stage)
 # ==================================
 # Rustのビルドツールチェーンとsqlx-cliをインストール
-FROM rust:1.78-slim AS builder
+FROM rust:1.88.0 AS builder
 
 # sqlx-cliのインストール
 RUN cargo install sqlx-cli
